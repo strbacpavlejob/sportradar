@@ -1,41 +1,53 @@
-import { Button, Grid, TextField, Typography } from "@mui/material";
+import * as React from "react";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import { useDispatch, useSelector } from "react-redux";
+import { selectScore, setIsMainManu } from "../app/store/score/scoreSlice";
+import { Button } from "@mui/material";
 
-function ScoreBoard() {
+export default function ScoreBoard() {
+  const currentScoreState = useSelector(selectScore);
+  const sortedScore = currentScoreState.scores.slice().sort((a, b) => {
+    return a.homePoints + a.awayPoints > b.homePoints + b.awayPoints ? 1 : -1;
+  });
+  const dispatch = useDispatch();
   return (
     <>
-      <Grid
-        item
-        direction={"row"}
-        display={"flex"}
-        flex
-        style={{ padding: 10 }}
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>#</TableCell>
+              <TableCell>Result</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {sortedScore.map((item, index) => (
+              <TableRow
+                key={index}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {index}
+                </TableCell>
+                <TableCell>{`${item.homeCountry} - ${item.awayCountry}: ${item.homePoints} - ${item.awayPoints}`}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Button
+        variant="contained"
+        style={{ margin: 25, fontSize: 25 }}
+        onClick={() => dispatch(setIsMainManu(true))}
       >
-        <TextField
-          name="score"
-          type="number"
-          label="Home"
-          style={{ fontSize: 50 }}
-          defaultValue={0}
-          InputProps={{ inputProps: { min: 0, max: 10 } }}
-        />
-        <Typography style={{ fontSize: 30 }}>:</Typography>
-        <TextField
-          name="score"
-          type="number"
-          label="Away"
-          style={{ fontSize: 50 }}
-          defaultValue={0}
-          InputProps={{ inputProps: { min: 0, max: 10 } }}
-        />
-      </Grid>
-      <Button variant="contained" style={{ fontSize: 25 }}>
-        Finish Game
-      </Button>
-      <Button variant="text" style={{ fontSize: 25 }}>
-        Scoreboard
+        Go Back
       </Button>
     </>
   );
 }
-
-export default ScoreBoard;

@@ -7,6 +7,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
 import {
   FormControl,
+  FormHelperText,
   Grid,
   InputLabel,
   MenuItem,
@@ -40,7 +41,10 @@ export default function SelectTeamsModal(props) {
 
   const checkPreviousMatch = () => {
     const filtredScore = currentScoreState.scores.find(
-      (item) => item.homeCountry === homeCountry && item.awayCountry
+      (item) =>
+        (item.homeCountry === homeCountry &&
+          item.awayCountry === awayCountry) ||
+        (item.homeCountry === awayCountry && item.awayCountry === homeCountry)
     );
     return filtredScore !== undefined;
   };
@@ -116,6 +120,11 @@ export default function SelectTeamsModal(props) {
                   ))}
               </Select>
             </FormControl>
+            {isDisabled && (
+              <FormHelperText error style={{ paddingTop: 20, fontSize: 15 }}>
+                Selected countries have already played
+              </FormHelperText>
+            )}
           </Grid>
         </DialogContent>
         <DialogActions>

@@ -12,9 +12,12 @@ import { Button } from "@mui/material";
 
 export default function ScoreBoard() {
   const currentScoreState = useSelector(selectScore);
-  const sortedScore = currentScoreState.scores.slice().sort((a, b) => {
-    return a.homePoints + a.awayPoints > b.homePoints + b.awayPoints ? 1 : -1;
-  });
+  const sortedScore = currentScoreState.scores
+    .slice()
+    .sort((a, b) => {
+      return a.homePoints + a.awayPoints - (b.homePoints + b.awayPoints);
+    })
+    .reverse();
   const dispatch = useDispatch();
   return (
     <>
@@ -33,7 +36,7 @@ export default function ScoreBoard() {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  {index}
+                  {index + 1}
                 </TableCell>
                 <TableCell>{`${item.homeCountry} - ${item.awayCountry}: ${item.homePoints} - ${item.awayPoints}`}</TableCell>
               </TableRow>

@@ -44,7 +44,7 @@ function MatchBoard(props) {
           type="number"
           label={currentScoreState.currentHomeCountry}
           style={{ fontSize: 50 }}
-          InputProps={{ inputProps: { min: 0, max: 10 } }}
+          InputProps={{ inputProps: { min: 0 } }}
           value={homePoints}
           onChange={(e) => setHomePoints(e.target.value)}
         />
@@ -55,7 +55,7 @@ function MatchBoard(props) {
           label={currentScoreState.currentAwayCountry}
           style={{ fontSize: 50 }}
           defaultValue={0}
-          InputProps={{ inputProps: { min: 0, max: 10 } }}
+          InputProps={{ inputProps: { min: 0 } }}
           value={awayPoints}
           onChange={(e) => setAwayPoints(e.target.value)}
         />
